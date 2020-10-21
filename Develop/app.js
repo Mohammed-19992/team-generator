@@ -14,46 +14,37 @@ const render = require("./lib/htmlRenderer");
 // and to create objects for each team member (using the correct classes as blueprints!)
 
 var member = [];
-var newmEmber;
+var newMember;
 const statments = [
-    {type: "list", name: "role", message: "Which team member would you like to add?", choices: ["Manager", "Engineer", "Intern", "Done adding team members!"],},
+    {type: "list", name: "memberTitle", message: "Which team member would you like to add on the profile?", choices: ["Manager", "Engineer", "Intern", "Done adding team members!"],},
     {type: "input", name: "memberName", message: "Employee's name:",
-    when: (answer) => answer.role !== "Done adding team members!"},
+    when: (answer) => answer.memberTitle !== "Done adding team members!"},
     {type: "input", name: "memberId", message: "Employee's ID:",
-    when: (answer) => answer.role !== "Done adding team members!"},
-    {type: "input", name: "memberSchool", message: "Employee's school:",
-    when: (answer) => answer.role === "Intern"},
+    when: (answer) => answer.memberTitle !== "Done adding team members!"},
     {type: "input", name: "memberEmail", message: "Employee's Emial address:",
-    when: (answer) => answer.role === "Engineer"},
-    {type: "input", name: "memberGitHub", message: "Employee's GitHub account:",
-    when: (answer) => answer.role === "Engineer"},
+    when: (answer) => answer.memberTitle !== "Done adding team members!"},
+    {type: "input", name: "memberSchool", message: "Employee's school:",
+    when: (answer) => answer.memberTitle === "Intern"},
+    {type: "input", name: "memberGithub", message: "Employee's GitHub account:",
+    when: (answer) => answer.memberTitle === "Engineer"},
     {type: "input", name: "memberOffice", message: "Employee's office Number:",
-    when: (answer) => answer.role === "Manager"},
+    when: (answer) => answer.memberTitle === "Manager"},
 ];
 
-function addEmployee() {
+function addMember() {
     if (member.length === 0) {
-        console.log("\n", "Thank you for using the Team Profile Generator App", "]n");
+        console.log("\n", "Thank you for choosing my Team Profile Generator App. Let's start!", "\n");
     }
-    inquirer.prompt(statments).then(answer) => {
+    inquirer.prompt(statments).then((answer) => {
         console.log("\n");
-        if (answer.role !== "Done adding team members!") {
-            switch (answer.role) {
+        if (answer.memberTitle !== "Done adding team members!") {
+            switch (answer.memberTitle) {
                 case "Manager": 
                 newMember = new Manager(
                     answer.memberName,
                     answer.memberId,
-                    answer.memeberSchool,
-                    answer.memberOffice,
-                );
-                member.push(newMember);
-                break;
-                case "Intern":
-                newMember = new Intern(
-                    answer.memberName,
-                    answer.memeberId,
-                    answer.memberSchool,
                     answer.memberEmail,
+                    answer.memberOffice,
                 );
                 member.push(newMember);
                 break;
@@ -62,24 +53,34 @@ function addEmployee() {
                         answer.memberName,
                         answer.memberId,
                         answer.memberEmail,
-                        answer.memberGitHub,
+                        answer.memberGithub,
                     );
-                    member.push(newmember);
+                    member.push(newMember);
+                    break;
+                case "Intern":
+                newMember = new Intern(
+                    answer.memberName,
+                    answer.memberId,
+                    answer.memberEmail,
+                    answer.memberSchool,
+                );
+                    member.push(newMember);
                     break;
                     default:
                         console.log("Data Entry Done Successfully!")
             }
-            addEmployee();
+            addMember();
         } else {
             fs.writeFile(outputPath, render(member), (error) => {
                 if (error) { return console.log(error);
                 }
             });
+            console.log("\n", "All is successfully done! Thanks for using the Team Profile Generator!");
         }
 
-    }
+    });
 }
-getMember();
+addMember();
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
