@@ -6,6 +6,7 @@ This app is built with a code using a Node CLI that takes in information about e
 
 ## screenshot of the project:
 
+![team-generator1](https://user-images.githubusercontent.com/67847324/96817976-889bfb00-13ee-11eb-93ca-c9c73593bccf.gif)
 
 ## Review
 The URL of the video showing the entire functionality of the app: https://www.youtube.com/watch?v=n7D500QFrzo
